@@ -4,6 +4,7 @@ from flask_migrate import MigrateCommand
 from app import create_app
 from app.models import db
 from app.migrations.create_db import create_movie_db_data
+from app.migrations.delete_basic_db import delete_data
 
 settings = 'app.settings.local'
 app = create_app(settings_path=settings)
@@ -20,6 +21,10 @@ def createdb():
 @manager.command
 def insert_basic_data():
 	create_movie_db_data()
+
+@manager.command
+def delete_basic_data():
+	delete_data()
 
 if __name__ == '__main__':
 	manager.run()
