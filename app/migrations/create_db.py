@@ -2,10 +2,12 @@ from app.models import db, Theater, SeatingsRow
 
 THEATER_SEATING_DATA = [
     {
-        "theater_name" : "inox",
+        "theater_name" : "Inox",
+        "theater_slug": "ionx",
         "seating":[
             {
                 "name": "A",
+                "slug":"a",
                 "seat_nos" :[
                     (1, True),
                     (2, False),
@@ -19,6 +21,7 @@ THEATER_SEATING_DATA = [
             },
             {
                 "name": "B",
+                "slug":"b",
                 "seat_nos": [
                     (1, False),
                     (2, True),
@@ -32,6 +35,7 @@ THEATER_SEATING_DATA = [
             },
             {
                 "name": "C",
+                "slug": "c",
                 "seat_nos": [
                     (1, False),
                     (2, False),
@@ -45,6 +49,7 @@ THEATER_SEATING_DATA = [
             },
             {
                 "name": "D",
+                "slug": "d",
                 "seat_nos":[
                     (1, True),
                     (2, False),
@@ -60,10 +65,12 @@ THEATER_SEATING_DATA = [
         ]
     },
     {
-        "theater_name" : "pvr",
+        "theater_name" : "Pvr",
+        "theater_slug": "pvr",
         "seating":[
             {
                 "name": "A",
+                "slug": "a",
                 "seat_nos" :[
                     (1, False),
                     (2, False),
@@ -77,6 +84,7 @@ THEATER_SEATING_DATA = [
             },
             {
                 "name": "B",
+                "slug": "b",
                 "seat_nos": [
                     (1, True),
                     (2, False),
@@ -90,6 +98,7 @@ THEATER_SEATING_DATA = [
             },
             {
                 "name": "C",
+                "slug": "c",
                 "seat_nos": [
                     (1, False),
                     (2, True),
@@ -103,6 +112,7 @@ THEATER_SEATING_DATA = [
             },
             {
                 "name": "D",
+                "slug": "d",
                 "seat_nos":[
                     (1, True),
                     (2, False),
@@ -121,7 +131,8 @@ THEATER_SEATING_DATA = [
 
 def create_movie_db_data():
     for theater_seating_details in THEATER_SEATING_DATA:
-        theater = Theater(name=theater_seating_details.get('theater_name', ''))
+        theater = Theater(name=theater_seating_details.get('theater_name', ''),
+                          slug=theater_seating_details.get('theater_slug'))
         db.session.add(theater)
         db.session.flush()
         for seating_details in theater_seating_details.get('seating'):
@@ -129,7 +140,8 @@ def create_movie_db_data():
             for row_number in seating_details.get('seat_nos'):
                 row = SeatingsRow(
                     theater_id=theater.id,
-                    row_name=seating_details.get("name")
+                    row_name=seating_details.get("name"),
+                    slug=seating_details.get("slug")
                 )
                 row.row_number = row_number[0]
                 row.is_aisle = row_number[1]
