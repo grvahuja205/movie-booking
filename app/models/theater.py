@@ -7,7 +7,7 @@ class Theater(BaseModel):
     name = db.Column(db.String(300), nullable=False)
     slug = db.Column(db.String(300))
 
-    seating_details = db.relationship('SeatingsRow', back_populates='theater')
+    screen_details = db.relationship('Screen', back_populates='theater')
 
     def __str__(self):
         return self.name

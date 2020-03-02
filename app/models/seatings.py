@@ -8,8 +8,11 @@ class SeatingsRow(BaseModel):
     """
     __tablename__ = 'seatings_row'
 
-    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'), nullable=False)
-    theater = db.relationship('Theater', back_populates='seating_details')
+    screen_id = db.Column(db.Integer, db.ForeignKey('screen.id'), nullable=False)
+    screen = db.relationship('Screen', back_populates='seating_details')
+
+    # theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'), nullable=False)
+    # theater = db.relationship('Theater', back_populates='seating_details')
 
     row_name = db.Column(db.String(300), nullable=False) #The name of the row.
     row_number = db.Column(db.Integer, nullable=False) #The row number
