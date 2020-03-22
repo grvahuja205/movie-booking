@@ -1,28 +1,25 @@
 from sqlalchemy import func
-from app.models import db, Theater as TheaterModel, SeatingsRow as SeatingRowModel
+from app.models import db, Screen as TheaterModel, SeatingsRow as SeatingRowModel
 
 
-class SeatingDetailsHelper():
+def get_seating_details(theater_id=None):
 
-    def get_theater_id_rows_mapping(self):
-        theater_id_rows_mapping = db.session.query(
-            SeatingRowModel.theater_id,
-            func.array_agg(SeatingRowModel.id)
-        ).join(
-            TheaterModel,
-            TheaterModel.id == SeatingRowModel.theater_id
-        ).group_by(
-
-        )
-
-def get_seating_details():
-    theater_id_seating_details_mapping = dict(db.session.query(
-        SeatingRowModel.theater_id,
-        func.json_agg(func.json_build_objet(
-            SeatingRowModel.row_name , SeatingRowModel
-        ))
+    theater_id_seating_details_mapping = db.session.query(
+        SeatingRowModel.theater_id.label('theater_id'),
+        SeatingRowModel.row_name.label('row_name'),
+        func.json_agg(func.json_build_object(
+            "row_number", SeatingRowModel.row_number,
+            "is_aisle", SeatingRowModel.is_aisle
+        )).label('row_details')
     ).group_by(
-        SeatingRowModel.theater_id
-    ).all())
+        SeatingRowModel.theater_id,
+        SeatingRowModel.row_name
+    ).order_by(
+        SeatingRowModel.theater_id,
+        SeatingRowModel.row_name
+    )
 
-    return theater_id_seating_details_mapping
+    if theater_id:
+        theater_id_seating_details_mapping.filter(SeatingRowModel.theater_id == theater_id)
+
+    return theater_id_seating_details_mapping.all()

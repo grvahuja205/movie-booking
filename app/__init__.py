@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_migrate import Migrate
 from app.models import db
 from app.routes.api import api
-from app.routes.screens import screens_view
+from app.routes import screens_view, theater_screen_view
 
 def create_app(settings_path):
     """
@@ -27,5 +27,6 @@ def create_app(settings_path):
         return render_template('index.html')
 
     app.register_blueprint(screens_view)
+    app.register_blueprint(theater_screen_view)
 
     return app

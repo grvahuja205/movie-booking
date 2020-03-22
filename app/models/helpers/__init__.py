@@ -1,0 +1,1 @@
+from .generic_methods import get_model_id_model_object_mapping
